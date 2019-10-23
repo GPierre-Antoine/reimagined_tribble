@@ -1,0 +1,27 @@
+#!/bin/bash
+
+args=(
+'-i -kt'
+'--with-argument'
+)
+
+
+set -- "${args[@]}"
+
+soft="./while_switch_case_reset"
+while [ "$#" -gt 0 ]; do
+    arg=$1
+    shift
+    args=("$@")
+    IFS=' ' set -- "$arg"
+    printf "Running %s with arguments : " "$soft"
+    printf "%s, " "$@"
+    printf "\n\n"
+    if $soft "$@"; then
+        echo "Failure : $arg failed"
+        exit
+    fi
+    set -- "${args[@]}"
+done
+
+
