@@ -2,17 +2,30 @@
 
 arguments=()
 while [ "$#" -gt 0  ]; do
-    doshift=true
     case "$1" in
-        -h|--help)
-            echo help
-            exit
+        --with-argument)
+            if [ "$#" -lt 2  ]; then
+                echo "missing argument for option $1" >&2
+                exit 4
+            fi
+            echo "$1 $2"
+            shift
+            ;;
+        --long1|--long2)
+            echo "long option ${1:2} met"
+            ;;
+        -k|-u|-i)
+            echo "flag ${1:1} met"
             ;;
         --)
             shift
             arguments+=("$@")
             set --
             break;
+            ;;
+        --*)
+            echo "Unknown long option $1" >&2
+            exit 3
             ;;
         -*)
             if [ "${#1}" -eq 1 ]; then
@@ -27,14 +40,17 @@ while [ "$#" -gt 0  ]; do
             rest=${1:2}
             shift
             set -- -"$first" -"$rest" "$@"
-            doshift=false
+            continue
             ;;
         *)
-            echo "adding argument $1 to pool"
             arguments+=("$1")
             ;;
     esac
-    if "$doshift"; then 
-        shift;
-    fi
+    shift
 done
+
+set -- "${arguments[@]}"
+
+printf "Running with arguments: "
+printf "%s, " "$@"
+printf "\n"

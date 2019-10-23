@@ -1,0 +1,5 @@
+#!/bin/bash
+arg='./while_switch_case_reset --with-argument'
+
+printf "%s\n\n" "$arg"
+eval "$arg"

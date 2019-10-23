@@ -1,0 +1,5 @@
+#!/bin/bash
+arg='./while_switch_case_reset -k test1 test2 -u test3 -i test4 --with-argument "my argument" --long2 -- --long1 test5'
+
+printf "%s\n\n" "$arg"
+eval "$arg"
